@@ -46,11 +46,6 @@ has 'secure_url' => (
 has 'session_key' => (is => 'rw', isa => 'Str');
 
 
-
-
-
-
-
 sub get {
     my $self = shift;
     my $args = shift;
@@ -229,7 +224,6 @@ sub save_amend_order {
 }
 
 1;
-
 
 
 =pod
