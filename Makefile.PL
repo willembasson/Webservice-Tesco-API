@@ -15,7 +15,8 @@ my %WriteMakefileArgs = (
     'English' => '0',
     'File::Find' => '0',
     'File::Temp' => '0',
-    'Test::More' => '0'
+    'Test::More' => '0',
+    'Test::Most' => '0'
   },
   'CONFIGURE_REQUIRES' => {
     'ExtUtils::MakeMaker' => '6.31'
@@ -32,7 +33,7 @@ my %WriteMakefileArgs = (
     'LWP::Curl' => '0',
     'URI' => '0'
   },
-  'VERSION' => '1.110210',
+  'VERSION' => '1.110220',
   'test' => {
     'TESTS' => 't/*.t'
   }

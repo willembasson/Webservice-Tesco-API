@@ -234,14 +234,10 @@ WebService::Tesco::API - Web service for the Tesco groceries API
 
 =head1 VERSION
 
-version 1.110210
+version 1.110220
 
 =head1 SYNOPSIS
 
-Use WebService::Tesco::API to access the Tesco.com REST Grocery API.
-
-    use strict;
-    use warnings;
     use WebService::Tesco::API;
 
     my $tesco = WebService::Tesco::API->new(
@@ -336,12 +332,12 @@ Set the password to log in with
 
 Returns:
 
-{   "StatusCode"                => 0, 
-    "StatusInfo"                => "Command Processed OK", 
-    "BranchNumber"              => "2431", 
-    "CustomerId"                => "12592340", 
-    "CustomerName"              => "Mr Lansley", 
-    "SessionKey"                => "x38yJTParR282iuQrmvcmgBwLhwhLKJqKj6rcmxYy1WRR4j5me", 
+{   "StatusCode"                => 0,
+    "StatusInfo"                => "Command Processed OK",
+    "BranchNumber"              => "2431",
+    "CustomerId"                => "12592340",
+    "CustomerName"              => "Mr Lansley",
+    "SessionKey"                => "x38yJTParR282iuQrmvcmgBwLhwhLKJqKj6rcmxYy1WRR4j5me",
     "ChosenDeliverySlotInfo"    => "No delivery slot is reserved." }
 
 =head2 session_get( $args )
@@ -377,24 +373,24 @@ Enables products to be added to, removed from, and updated in the current basket
 
 =item * C<< changequantity => 1 >>
 
-A positive or negative value that changes the products in the basket by that quantity, according to these rules: 
+A positive or negative value that changes the products in the basket by that quantity, according to these rules:
 
 =over 4
 
 =item * 1) If the product was absent from the basket before that
 product was added, it is inserted into the basket at the
-requested quantity. 
+requested quantity.
 
 =item * 2) If the product was already in the basket, the quantity is
 increased by requested quantity if positive, or reduced by
-the requested quantity if the requested quantity is negative. 
+the requested quantity if the requested quantity is negative.
 
 =item * 3) If a negative requested quantity is equal to or larger than
 the existing quantity, the product is removed from the
-basket. 
+basket.
 
 =item * 4) For products that sell by weight, quantities added or
-removed are still each. For example, if you are adding apples that are priced per Kg, 
+removed are still each. For example, if you are adding apples that are priced per Kg,
 selecting 2 for this parameter will add 2 individual apples to the basket, not 2 Kg of apples.
 
 =back
@@ -437,7 +433,7 @@ Lists the contents of the basket.
 
 =item * C<< fast => ['Y'|'N'] >>
 
-Massively speeds up retrieval (if set to 'Y') of the basket at the cost of not being able 
+Massively speeds up retrieval (if set to 'Y') of the basket at the cost of not being able
 to find all of the core attributes required for a product, such as EANBarcode. (OPTIONAL)
 
 =back
@@ -516,7 +512,7 @@ Set to 'Y' for extended information. (OPTIONAL)
 
 =head2 ready_for_checkout()
 
-Checks to see if an order is ready for checkout (that is, there are at least 5 products 
+Checks to see if an order is ready for checkout (that is, there are at least 5 products
 in the basket and a delivery slot has been selected).
 
 =head2 server_date_time()
@@ -553,4 +549,3 @@ the same terms as the Perl 5 programming language system itself.
 
 
 __END__
-

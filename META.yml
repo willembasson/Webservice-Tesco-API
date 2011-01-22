@@ -7,6 +7,7 @@ build_requires:
   File::Find: 0
   File::Temp: 0
   Test::More: 0
+  Test::Most: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.31
 dynamic_config: 0
@@ -23,4 +24,4 @@ requires:
   JSON: 0
   LWP::Curl: 0
   URI: 0
-version: 1.110210
+version: 1.110220

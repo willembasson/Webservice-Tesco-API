@@ -7,6 +7,7 @@ README
 dist.ini
 lib/WebService/Tesco/API.pm
 t/00-compile.t
+t/01_basic_test.t
 t/author-critic.t
 t/release-dist-manifest.t
 t/release-distmeta.t
