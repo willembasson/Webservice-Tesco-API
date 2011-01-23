@@ -14,10 +14,11 @@ use JSON;
 use Data::Dumper;
 
 
-our $VERSION      = '0.01';
-our $API_ENDPOINT = 'http://www.techfortesco.com/groceryapi/restservice.aspx';
+our $VERSION = '0.01';
+our $API_ENDPOINT =
+  'http://www.techfortesco.com/groceryapi_b1/restservice.aspx';
 our $SECURE_ENDPOINT =
-  'https://secure.techfortesco.com/groceryapi/restservice.aspx';
+  'https://secure.techfortesco.com/groceryapi_b1/restservice.aspx';
 our $USER_AGENT = LWP::Curl->new(user_agent => __PACKAGE__ . '_' . $VERSION);
 
 
@@ -215,7 +216,7 @@ sub ready_for_checkout {
 
 
 sub server_date_time {
-    return shift->get('SERVERDATETIME');
+    return shift->get({command => 'SERVERDATETIME'});
 }
 
 
@@ -238,22 +239,28 @@ version 1.110220
 
 =head1 SYNOPSIS
 
-    use WebService::Tesco::API;
+use WebService::Tesco::API;
 
-    my $tesco = WebService::Tesco::API->new(
+my $tesco = WebService::Tesco::API->new(
             app_key         => 'xxxxxx',
             developer_key   => 'yyyyyy',
             debug           => 1,
-        );
+    );
 
-    my $result = $tesco->login({
+my $result = $tesco->login({
             email       => 'test@test.com',
             password    => 'password',
-        });
+    });
+
+=head1 DESCRIPTION
+
+Web service for the Tesco groceries API, currently in beta.
+Register at: L<https://secure.techfortesco.com/tescoapiweb/>
+Terms of use: L<http://www.techfortesco.com/tescoapiweb/terms.htm>
 
 =head1 NAME
 
-WebService::Tesco::API - Web service for the Tesco groceries API
+WebService::Tesco::API - Web service for the Tesco groceries API.
 
 =head1 VERSION
 
@@ -482,7 +489,7 @@ Used to get a page of offers rather than all of them. (OPTIONAL)
 
 =back
 
-=head2 list_products_by_category({ extendedinfo => 'Y' })
+=head2 list_products_by_category({ category => 18, extendedinfo => 'Y' })
 
 Lists the products for a given shelf (provided by list_product_categories).
 
