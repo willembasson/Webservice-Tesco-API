@@ -233,10 +233,6 @@ sub save_amend_order {
 
 WebService::Tesco::API - Web service for the Tesco groceries API
 
-=head1 VERSION
-
-version 1.110220
-
 =head1 SYNOPSIS
 
 use WebService::Tesco::API;
@@ -257,14 +253,6 @@ my $result = $tesco->login({
 Web service for the Tesco groceries API, currently in beta.
 Register at: L<https://secure.techfortesco.com/tescoapiweb/>
 Terms of use: L<http://www.techfortesco.com/tescoapiweb/terms.htm>
-
-=head1 NAME
-
-WebService::Tesco::API - Web service for the Tesco groceries API.
-
-=head1 VERSION
-
-version 1.110210
 
 =head1 NAME
 
