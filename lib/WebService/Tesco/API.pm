@@ -57,7 +57,7 @@ sub get {
     unless ($res) {
         die $res;
     }
-    warn $res if $self->debug();
+   # warn $res if $self->debug();
 
     return JSON->new->utf8->decode($res);
 }
@@ -90,6 +90,13 @@ sub product_search {
     $args->{sessionkey} = $self->session_key;
     $args->{command}    = 'PRODUCTSEARCH';
     return $self->get($args);
+}
+
+
+
+sub list_product_categories {
+return shift->get({command => 'LISTPRODUCTCATEGORIES',
+                   sessionkey => $self->session_key });
 }
 
 

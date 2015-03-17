@@ -46,4 +46,8 @@ is( $tesco->product_search({searchtext => 'Turnip', extendedinfo => 'Y'})
     'Correct status code for product_search'
 );
 
+my $categories =  $tesco->list_product_categories;
+warn Dumper($categories);
+ok($categories);
+
 done_testing;
