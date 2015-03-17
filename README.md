@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/davehodg/Webservice-Tesco-API.svg?branch=v2_additions)](https://travis-ci.org/davehodg/Webservice-Tesco-API)
 
 This archive contains the distribution WebService-Tesco-API,
 version 1.110220:
