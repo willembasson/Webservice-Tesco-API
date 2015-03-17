@@ -95,8 +95,9 @@ sub product_search {
 
 
 sub list_product_categories {
-return shift->get({command => 'LISTPRODUCTCATEGORIES',
-                   sessionkey => $self->session_key });
+    my $self = shift;
+    return $self->get({command => 'LISTPRODUCTCATEGORIES',
+                       sessionkey => $self->session_key });
 }
 
 
