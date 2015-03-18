@@ -29,6 +29,7 @@ my %WriteMakefileArgs =
     'Test::Kwalitee' => '0',
     'Test::MinimumVersion' => '0',
     'Test::NoTabs' => '0',
+    'Pod::Coverage::TrustPod' => '0',
    },
    'CONFIGURE_REQUIRES' => {
                             'ExtUtils::MakeMaker' => '6.31'

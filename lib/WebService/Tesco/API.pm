@@ -46,8 +46,7 @@ sub get {
         $urlstring .= "$key=" . uri_escape($value) . '&' ;
       } else {
         $urlstring .= "$key=&";
-      }
-        
+      }       
     }
     chop $urlstring;
     warn $urlstring if $self->debug();
