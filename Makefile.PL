@@ -11,7 +11,7 @@ use ExtUtils::MakeMaker 6.31;
 my %WriteMakefileArgs =
   (
    'ABSTRACT' => 'Web service for the Tesco groceries API',
-   'AUTHOR' => 'Willem Basson <willem.basson@gmail.com>',
+   'AUTHOR' => 'davehodg@cpan.com <David Hodgkinson>',
    'BUILD_REQUIRES' =>
    {
     'English' => '0',
@@ -46,7 +46,7 @@ my %WriteMakefileArgs =
     'LWP::Curl' => '0',
     'URI' => '0',
    },
-   'VERSION' => '1.110220',
+   'VERSION' => '1.2',
    'test' => {
               'TESTS' => 't/*.t'
              }
