@@ -65,7 +65,6 @@ sub get {
 
 sub login {
     my $self = shift;
-    my $args = shift;
 
     my $result = $self->get(
         {   command        => 'LOGIN',
@@ -193,6 +192,11 @@ Searches for products using text or barcode.
 =item * C<< searchtext => 'Turnip' >>
 
 Text to search for products, 9-digit Product ID, or 13-digit numeric barcode value.
+
+=back
+
+=head2 list_product_categories
+
 
 =head1 AUTHOR
 

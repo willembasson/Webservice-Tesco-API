@@ -19,6 +19,7 @@ use strict;
 use warnings;
 
 use Test::More;
+use Data::Dumper;
 use lib 'lib';
 
 use_ok('WebService::Tesco::API');
@@ -47,7 +48,6 @@ is( $tesco->product_search({searchtext => 'Turnip', extendedinfo => 'Y'})
 );
 
 my $categories =  $tesco->list_product_categories;
-warn Dumper($categories);
 ok($categories);
 
 done_testing;
