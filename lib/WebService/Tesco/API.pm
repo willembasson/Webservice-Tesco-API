@@ -329,6 +329,34 @@ Text to search for products, 9-digit Product ID, or 13-digit numeric barcode val
 
 =head2 choose_delivery_slot
 
+=head2 amend_order
+
+=head2 cancel_amend_order
+
+=head2 change_basket
+
+=head2 latest_app_version
+
+=head2 list_basket
+
+=head2 list_basket_summary
+
+=head2 list_favourites
+
+=head2 list_pending_orders
+
+=head2 list_product_offers
+
+=head2 list_products_by_category
+
+=head2 ready_for_checkout
+
+=head2 save_amend_order
+
+=head2 search_product
+
+=head2 server_date_time
+
 =head1 TESTS
 
 To fully exercise the tests set the following environment variables:
