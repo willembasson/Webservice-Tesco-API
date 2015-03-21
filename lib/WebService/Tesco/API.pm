@@ -43,7 +43,7 @@ sub get {
     my ($self, $args) = @_;
     my $urlstring = $self->secure_url ;
 
-    #warn "get args: ", Dumper($args);
+    warn "get args: ", Dumper($args) if $self->debug();
     
     while (my ($key, $value) = each %{$args}) {
       if ($value) {
@@ -60,7 +60,7 @@ sub get {
     unless ($res) {
         die $res;
     }
-   # warn $res if $self->debug();
+    #warn $res if $self->debug();
 
     return JSON->new->utf8->decode($res);
 }
@@ -77,7 +77,7 @@ sub login {
                 secure         => 1,
                } ;
 
-  my $params = { %$params, %$args } ;
+  $params = { %$params, %$args } ;
   
   my $result = $self->get($params);
   
@@ -103,24 +103,43 @@ sub search_product {
 
 sub list_product_categories {
     my $self = shift;
-    return $self->get({command => 'LISTPRODUCTCATEGORIES',
-                       sessionkey => $self->session_key });
+    return $self->get
+      ({
+        command => 'LISTPRODUCTCATEGORIES',
+        sessionkey => $self->session_key
+       });
 }
 
+#not entirely sure what this is supposed
+#sub get_session {
+#  my $self = shift;
+#  my $command = shift;
+#  my $args = shift || {};
+#  die 'You need to log in first' unless $self->session_key();
+#  return $self->get({
+#                     %{$args},
+#                     command => $command,
+#                     sessionkey => $self->session_key()
+#                    });
+#}
 
-sub session_get {
+sub list_delivery_slots {
   my $self = shift;
-  my $command = shift;
-  my $args = shift || {};
-  die 'You need to log in first' unless $self->session_key();
-  return $self->get(
-                    {
-                     %{$args},
-                     command => $command,
-                     sessionkey => $self->session_key()
-                    }
-                   );
+  return $self->get({ command => 'LISTDELIVERYSLOTS',
+                    sessionkey => $self->session_key});
 }
+
+sub choose_delivery_slot {
+  my $self = shift;
+  my $args = shift;
+  die 'You need to supply a delivery slot id (deliveryslotid)'
+    unless $args->{deliveryslotid};
+
+  my $params = {command => 'CHOOSEDELIVERYSLOT',sessionkey => $self->session_key};
+  $args = { %$args, %$params };
+  return $self->get($args);
+}
+
 
 
 sub amend_order {
@@ -146,13 +165,6 @@ sub change_basket {
   return $self->get('CHANGEBASKET', $args);
 }
 
-sub choose_delivery_slot {
-  my $self = shift;
-  my $args = shift;
-  die 'You need to supply a delivery slot id (deliveryslotid)'
-    unless $args->{deliveryslotid};
-  return $self->get('CHOOSEDELIVERYSLOT', $args);
-}
 
 sub latest_app_version {
   my $self = shift;
@@ -161,9 +173,6 @@ sub latest_app_version {
                      command => 'LATESTAPPVERSION', appkey => $self->app_key()});
 }
 
-sub list_delivery_slots {
-  return shift->get('LISTDELIVERYSLOTS');
-}
 
 sub list_basket {
   my $self = shift;
@@ -185,10 +194,6 @@ sub list_favourites {
 
 sub list_pending_orders {
   return shift->get('LISTPENDINGORDERS');
-}
-
-sub list_product_categories {
-  return shift->get('LISTPRODUCTCATEGORIES');
 }
 
 sub list_product_offers {
@@ -318,6 +323,25 @@ Text to search for products, 9-digit Product ID, or 13-digit numeric barcode val
 
 =head2 list_product_categories
 
+=head2 get_session
+
+=head2 list_delivery_slots
+
+=head2 choose_delivery_slot
+
+=head1 TESTS
+
+To fully exercise the tests set the following environment variables:
+
+Tesco API credentials:
+
+TESCO_APP_KEY=85CA7F234919EB59F3ED
+TESCO_DEVELOPER_KEY=MrQlih6BiuArPquj5BMi
+
+Your Tesco account credentials:
+
+TESCO_EMAIL=daveh@hodgkinson.org
+TESCO_PASSWORD=VjXda6Xt
 
 =head1 AUTHOR
 
