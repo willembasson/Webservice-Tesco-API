@@ -12,7 +12,7 @@ use LWP::Curl;
 use URI;
 use JSON;
 use Data::Dumper;
-
+use Carp qw(cluck longmess shortmess);
 
 our $VERSION = '0.02';
 
@@ -23,24 +23,28 @@ our $USER_AGENT = LWP::Curl->new(user_agent => __PACKAGE__ . '_' . $VERSION);
 
 has 'app_key'       => (is => 'ro', isa => 'Str', required => 1);
 has 'developer_key' => (is => 'ro', isa => 'Str', required => 1);
+has 'debug'         => (is => 'ro', isa => 'Bool', default => 0);
+has 'session_key'   => (is => 'rw', isa => 'Str');
 
-has 'debug' => (is => 'ro', isa => 'Bool', default => 0);
+has 'customer_name'     => (is => 'rw', isa => 'Str');
+has 'customer_forename' => (is => 'rw', isa => 'Str');
 
-has 'secure_url' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
-    default  => $SECURE_ENDPOINT,
-);
+has 'secure_url'    =>
+  (
+   is       => 'ro',
+   isa      => 'Str',
+   required => 1,
+   default  => $SECURE_ENDPOINT,
+  );
 
-has 'session_key' => (is => 'rw', isa => 'Str');
 
 
 sub get {
-    my $self = shift;
-    my $args = shift;
+    my ($self, $args) = @_;
     my $urlstring = $self->secure_url ;
 
+    #warn "get args: ", Dumper($args);
+    
     while (my ($key, $value) = each %{$args}) {
       if ($value) {
         $urlstring .= "$key=" . uri_escape($value) . '&' ;
@@ -63,31 +67,36 @@ sub get {
 
 
 sub login {
-    my $self = shift;
+  my $self = shift;
+  my $args = shift;
 
-    my $result = $self->get(
-        {   command        => 'LOGIN',
-            email          => '',
-            password       => '',
-            applicationkey => $self->app_key(),
-            developerkey   => $self->developer_key(),
-            secure         => 1,
-        }
-    );
+  my $params = {
+                command        => 'LOGIN',
+                applicationkey => $self->app_key(),
+                developerkey   => $self->developer_key(),
+                secure         => 1,
+               } ;
 
-    $self->session_key($result->{SessionKey});
+  my $params = { %$params, %$args } ;
+  
+  my $result = $self->get($params);
+  
+  $self->session_key($result->{SessionKey});
+  $self->customer_name($result->{CustomerName});
+  $self->customer_forename($result->{CustomerForename});
 
-    return $result;
+  return $result;
 }
 
 
-sub product_search {
-    my $self = shift;
-    my $args = shift;
+sub search_product {
+  my $self = shift;
+  my $args = shift;
 
-    $args->{sessionkey} = $self->session_key;
-    $args->{command}    = 'PRODUCTSEARCH';
-    return $self->get($args);
+  $args->{sessionkey} = $self->session_key;
+  $args->{command} = 'PRODUCTSEARCH';
+
+  return $self->get($args);
 }
 
 
@@ -98,6 +107,119 @@ sub list_product_categories {
                        sessionkey => $self->session_key });
 }
 
+
+sub session_get {
+  my $self = shift;
+  my $command = shift;
+  my $args = shift || {};
+  die 'You need to log in first' unless $self->session_key();
+  return $self->get(
+                    {
+                     %{$args},
+                     command => $command,
+                     sessionkey => $self->session_key()
+                    }
+                   );
+}
+
+
+sub amend_order {
+  my $self = shift;
+  my $args = shift;
+  die 'You need to supply an order number (ordernumber)'
+    unless $args->{ordernumber};
+  return $self->get('AMENDORDER', $args);
+}
+
+sub cancel_amend_order {
+  return shift->get('CANCELAMENDORDER');
+}
+
+sub change_basket {
+  my $self = shift;
+  my $args = shift;
+  die 'You need to supply a product id (productid)'
+    unless $args->{productid};
+  die 'You need to supply changequantity' unless $args->{changequantity};
+  $args->{substitution} ||= 'YES';
+  $args->{notesforshopper} ||= '';
+  return $self->get('CHANGEBASKET', $args);
+}
+
+sub choose_delivery_slot {
+  my $self = shift;
+  my $args = shift;
+  die 'You need to supply a delivery slot id (deliveryslotid)'
+    unless $args->{deliveryslotid};
+  return $self->get('CHOOSEDELIVERYSLOT', $args);
+}
+
+sub latest_app_version {
+  my $self = shift;
+  return $self->get(
+                    {
+                     command => 'LATESTAPPVERSION', appkey => $self->app_key()});
+}
+
+sub list_delivery_slots {
+  return shift->get('LISTDELIVERYSLOTS');
+}
+
+sub list_basket {
+  my $self = shift;
+  my $args = shift;
+  return $self->get('LISTBASKET', $args);
+}
+
+sub list_basket_summary {
+  my $self = shift;
+  my $args = shift;
+  return $self->get('LISTBASKETSUMMARY', $args);
+}
+
+sub list_favourites {
+  my $self = shift;
+  my $args = shift;
+  return $self->get('LISTFAVOURITES', $args);
+}
+
+sub list_pending_orders {
+  return shift->get('LISTPENDINGORDERS');
+}
+
+sub list_product_categories {
+  return shift->get('LISTPRODUCTCATEGORIES');
+}
+
+sub list_product_offers {
+  my $self = shift;
+  my $args = shift;
+  return $self->get('LISTPRODUCTOFFERS', $args);
+}
+
+sub list_products_by_category {
+  my $self = shift;
+  my $args = shift;
+  return $self->get('LISTPRODUCTSBYCATEGORY', $args);
+}
+
+sub product_search {
+  my $self = shift;
+  my $args = shift;
+  return $self->get('PRODUCTSEARCH', $args);
+}
+
+sub ready_for_checkout {
+  return shift->get('READYFORCHECKOUT');
+}
+
+sub server_date_time {
+  return shift->get({command => 'SERVERDATETIME'});
+}
+
+sub save_amend_order {
+  return shift->get('SAVEAMENDORDER');
+}
 
 1;
 
