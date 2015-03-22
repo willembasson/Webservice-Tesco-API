@@ -195,11 +195,10 @@ sub amend_order {
   my $args = shift;
   die 'You need to supply an order number (ordernumber)'
     unless $args->{ordernumber};
-  return $self->get('AMENDORDER', $args);
-}
 
-sub cancel_amend_order {
-  return shift->get('CANCELAMENDORDER');
+  my $params = {command => 'AMENDORDER',  sessionkey => $self->session_key} ;
+  $args = { %$args, %$params };
+  return $self->get($params);
 }
 
 sub change_basket {
@@ -210,9 +209,16 @@ sub change_basket {
   die 'You need to supply changequantity' unless $args->{changequantity};
   $args->{substitution} ||= 'YES';
   $args->{notesforshopper} ||= '';
-  return $self->get('CHANGEBASKET', $args);
+
+
+  my $params = {command => 'CHANGEBASKET' ,  sessionkey => $self->session_key} ;
+  $args = { %$args, %$params };
+  return $self->get($params);
 }
 
+sub cancel_amend_order {
+  return shift->get({command => 'CANCELAMENDORDER'});
+}
 
 sub ready_for_checkout {
   return shift->get({command =>'READYFORCHECKOUT'});
