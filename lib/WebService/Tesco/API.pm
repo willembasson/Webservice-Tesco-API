@@ -100,6 +100,10 @@ sub search_product {
 }
 
 
+sub server_date_time {
+  return shift->get({command => 'SERVERDATETIME'});
+}
+
 
 sub list_product_categories {
     my $self = shift;
@@ -142,6 +146,50 @@ sub choose_delivery_slot {
 
 
 
+# docs say:
+# LATESTAPPVERSION 	Returns your appʼs latest version (set by you in the developer portal).
+# this does not appear to be true
+sub latest_app_version {
+  my $self = shift;
+  return $self->get({command => 'LATESTAPPVERSION', sessionkey => $self->session_key});
+}
+
+
+sub list_basket {
+  my $self = shift;
+  return $self->get({command => 'LISTBASKET', sessionkey => $self->session_key});
+}
+
+sub list_basket_summary {
+  my $self = shift;
+  return $self->get({command => 'LISTBASKETSUMMARY', sessionkey => $self->session_key});
+}
+
+sub list_favourites {
+  my $self = shift;
+  return $self->get({command => 'LISTFAVOURITES', sessionkey => $self->session_key});
+}
+
+sub list_pending_orders {
+  my $self = shift;
+  return $self->get({command => 'LISTPENDINGORDERS', sessionkey => $self->session_key});
+}
+
+sub list_product_offers {
+  my $self = shift;
+  return $self->get({command => 'LISTPRODUCTOFFERS',  sessionkey => $self->session_key});
+}
+
+sub list_products_by_category {
+  my $self = shift;
+  my $args = shift;
+  my $params = {command => 'LISTPRODUCTSBYCATEGORY',  sessionkey => $self->session_key} ;
+  $args = { %$args, %$params };
+  return $self->get($args);
+}
+
+
+
 sub amend_order {
   my $self = shift;
   my $args = shift;
@@ -166,64 +214,12 @@ sub change_basket {
 }
 
 
-sub latest_app_version {
-  my $self = shift;
-  return $self->get(
-                    {
-                     command => 'LATESTAPPVERSION', appkey => $self->app_key()});
-}
-
-
-sub list_basket {
-  my $self = shift;
-  my $args = shift;
-  return $self->get('LISTBASKET', $args);
-}
-
-sub list_basket_summary {
-  my $self = shift;
-  my $args = shift;
-  return $self->get('LISTBASKETSUMMARY', $args);
-}
-
-sub list_favourites {
-  my $self = shift;
-  my $args = shift;
-  return $self->get('LISTFAVOURITES', $args);
-}
-
-sub list_pending_orders {
-  return shift->get('LISTPENDINGORDERS');
-}
-
-sub list_product_offers {
-  my $self = shift;
-  my $args = shift;
-  return $self->get('LISTPRODUCTOFFERS', $args);
-}
-
-sub list_products_by_category {
-  my $self = shift;
-  my $args = shift;
-  return $self->get('LISTPRODUCTSBYCATEGORY', $args);
-}
-
-sub product_search {
-  my $self = shift;
-  my $args = shift;
-  return $self->get('PRODUCTSEARCH', $args);
-}
-
 sub ready_for_checkout {
-  return shift->get('READYFORCHECKOUT');
-}
-
-sub server_date_time {
-  return shift->get({command => 'SERVERDATETIME'});
+  return shift->get({command =>'READYFORCHECKOUT'});
 }
 
 sub save_amend_order {
-  return shift->get('SAVEAMENDORDER');
+  return shift->get({command =>'SAVEAMENDORDER'});
 }
 
 1;
@@ -335,7 +331,11 @@ Text to search for products, 9-digit Product ID, or 13-digit numeric barcode val
 
 =head2 change_basket
 
+https://secure.techfortesco.com/tescoapiweb/wiki/changebasket.html
+
 =head2 latest_app_version
+
+Doesn't appear to be working. No version I can see to be set in the portal.
 
 =head2 list_basket
 

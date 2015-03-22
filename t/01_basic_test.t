@@ -45,10 +45,6 @@ my $result = $tesco->login
     password => $ENV{'TESCO_PASSWORD'} || undef,
    });
 
-#is($tesco->customer_forename, "David", "first name");
-#is($tesco->customer_name,     "Mr Hodgkinson", "full name");
-
-my $args = 1 ;
 
 my $products = $tesco->search_product
   ({
@@ -79,13 +75,12 @@ ProductType ShelfCategoryName/) {
   ok(exists $products->{Products}->[0]->{$p}, $p);
 }
 
-my $categories =  $tesco->list_product_categories;
-ok($categories,"categories");
 
 # could go through all the categories here, but that's probably fragile!
 
 #
 #warn $tesco->get_session;
+
 
 
 my $slots = $tesco->list_delivery_slots;
@@ -96,4 +91,79 @@ ok($slot,"slot");
 ok($slot->{StatusCode},"code");
 ok($slot->{StatusInfo},"info");
 ok($slot->{ReservedUntil},"reserved");
+
+
+my $basket = $tesco->list_basket;
+
+for my $f (qw/BasketID BasketTotalClubcardPoints StatusInfo
+          BasketGuidePrice BasketQuantity BasketGuideMultiBuySavings
+          BasketLines InAmendOrderMode StatusCode/) {
+  ok(exists $basket->{$f}, $f);
+}
+
+$basket = $tesco->list_basket_summary;
+
+for my $f (qw/StatusCode BasketID BasketLines StatusInfo InAmendOrderMode/) {
+  ok(exists $basket->{$f}, $f);
+}
+
+
+my $favourites = $tesco->list_favourites;
+ok($favourites->{TotalProductCount},"TotalProductCount");
+
+for my $f (qw/OfferLabelImagePath Name ShelfCategoryName UnitPrice
+              HealthierAlternativeProductId CheaperAlternativeProductId
+              OfferPromotion Price ProductId ShelfCategory ProductType
+              PriceDescription UnitType ImagePath OfferValidity
+              MaximumPurchaseQuantity EANBarcode BaseProductId/) {
+  ok(exists $favourites->{Products}->[0]->{$f}, $f);
+}
+
+
+my $orders = $tesco->list_pending_orders;
+for my $f (qw/StatusInfo StatusCode PendingOrders/) {
+  ok(exists $orders->{$f},$f);
+}
+
+
+my $offers = $tesco->list_product_offers;
+
+for my $f (qw/TotalProductCount StatusCode PageNumber TotalPageCount /) {
+  ok(exists $offers->{$f},$f);
+}
+
+for my $f (qw/ImagePath CheaperAlternativeProductId HealthierAlternativeProductId
+ProductId ProductType PriceDescription ShelfCategoryName Name
+EANBarcode ShelfCategory UnitType BaseProductId OfferValidity
+OfferLabelImagePath MaximumPurchaseQuantity Price UnitPrice
+OfferPromotion/) {
+  ok(exists $offers->{Products}->[0]->{$f}, $f);
+}
+
+
+my $categories =  $tesco->list_product_categories;
+ok($categories,"categories");
+
+$products = $tesco->list_products_by_category({category => 18, extendedinfo => 'y'}) ;
+
+for my $f (qw/PageProductCount StatusCode StatusInfo/) {
+  ok(exists $products->{$f}, $f);
+}
+
+for my $f (qw/BaseProductId EANBarcode CheaperAlternativeProductId
+HealthierAlternativeProductId ImagePath MaximumPurchaseQuantity Name
+OfferPromotion OfferValidity OfferLabelImagePath ShelfCategory
+ShelfCategoryName Price PriceDescription ProductId ProductType
+UnitPrice UnitType/) {
+  ok(exists $products->{Products}->[0]->{$f}, $f);
+}
+
+my $datetime = $tesco->server_date_time;
+is($datetime->{StatusInfo}, "SUCCESS", "SUCCESS");
+for my $f (qw/ServerUTCDateTime ServerLocalDateTime/) {
+  # should probably parse the date time
+  ok($datetime->{$f}, $f);
+}
+
+
 done_testing;

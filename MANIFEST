@@ -10,6 +10,7 @@ MANIFEST.SKIP
 MYMETA.json
 MYMETA.yml
 README.md
+release-portability.t
 t/00-compile.t
 t/01_basic_test.t
 t/author-critic.t
