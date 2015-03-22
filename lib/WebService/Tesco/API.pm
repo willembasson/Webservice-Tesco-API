@@ -369,7 +369,7 @@ TESCO_DEVELOPER_KEY=MrQlih6BiuArPquj5BMi
 Your Tesco account credentials:
 
 TESCO_EMAIL=daveh@hodgkinson.org
-TESCO_PASSWORD=VjXda6Xt
+TESCO_PASSWORD=xxxxxxx
 
 =head1 AUTHOR
 
