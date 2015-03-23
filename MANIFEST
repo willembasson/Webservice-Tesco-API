@@ -1,3 +1,4 @@
+.coveralls.yml
 .travis.yml
 Changelog
 dist.ini
