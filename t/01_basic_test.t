@@ -34,10 +34,11 @@ my $tesco = WebService::Tesco::API->new
 
 isa_ok($tesco, 'WebService::Tesco::API', 'Create a new instance');
 
-can_ok(
-    $tesco,
-    qw ( new get login search_product )
-);
+can_ok( $tesco, qw ( new get login search_product server_date_time
+    list_product_categories list_delivery_slots choose_delivery_slot
+    latest_app_version list_basket list_basket_summary list_favourites
+    list_pending_orders list_product_offers list_products_by_category
+    change_basket) );
 
 my $result = $tesco->login
   ({
@@ -45,8 +46,9 @@ my $result = $tesco->login
     password => $ENV{'TESCO_PASSWORD'} || undef,
    });
 
-
-my $products = $tesco->search_product
+my $products;
+if (0) {
+$products = $tesco->search_product
   ({
     searchtext => 'Turnip',
     extendedinfo => 'Y'
@@ -125,6 +127,7 @@ for my $f (qw/StatusInfo StatusCode PendingOrders/) {
   ok(exists $orders->{$f},$f);
 }
 
+}
 
 my $offers = $tesco->list_product_offers;
 
@@ -141,11 +144,15 @@ OfferPromotion/) {
 }
 
 
+if (0) {
 my $categories =  $tesco->list_product_categories;
 ok($categories,"categories");
+}
 
 $products = $tesco->list_products_by_category({category => 18, extendedinfo => 'y'}) ;
 
+
+if (0) {
 for my $f (qw/PageProductCount StatusCode StatusInfo/) {
   ok(exists $products->{$f}, $f);
 }
@@ -165,5 +172,16 @@ for my $f (qw/ServerUTCDateTime ServerLocalDateTime/) {
   ok($datetime->{$f}, $f);
 }
 
+}
+
+#warn Dumper($products->{Products}->[0]);
+for my $i (0..4) {
+  warn $products->{Products}->[$i]->{ProductId};
+  my $change = $tesco->change_basket({
+                         productid      => $products->{Products}->[$i]->{ProductId},
+                         changequantity => 1,
+                                     });
+  is($change->{StatusCode},0,"status OK");
+}
 
 done_testing;

@@ -189,44 +189,45 @@ sub list_products_by_category {
 }
 
 
-
-sub amend_order {
-  my $self = shift;
-  my $args = shift;
-  die 'You need to supply an order number (ordernumber)'
-    unless $args->{ordernumber};
-
-  my $params = {command => 'AMENDORDER',  sessionkey => $self->session_key} ;
-  $args = { %$args, %$params };
-  return $self->get($params);
-}
-
 sub change_basket {
   my $self = shift;
   my $args = shift;
-  die 'You need to supply a product id (productid)'
-    unless $args->{productid};
-  die 'You need to supply changequantity' unless $args->{changequantity};
-  $args->{substitution} ||= 'YES';
-  $args->{notesforshopper} ||= '';
+  die 'You need to supply a product id (productid)' unless $args->{productid};
+  die 'You need to supply changequantity'           unless $args->{changequantity};
+
+  # not yet implemented
+  #$args->{substitution} ||= 'YES';
+  #$args->{notesforshopper} ||= '';
 
 
   my $params = {command => 'CHANGEBASKET' ,  sessionkey => $self->session_key} ;
+
   $args = { %$args, %$params };
-  return $self->get($params);
+  return $self->get($args);
 }
 
-sub cancel_amend_order {
-  return shift->get({command => 'CANCELAMENDORDER'});
-}
-
-sub ready_for_checkout {
-  return shift->get({command =>'READYFORCHECKOUT'});
-}
-
-sub save_amend_order {
-  return shift->get({command =>'SAVEAMENDORDER'});
-}
+#sub amend_order {
+#  my $self = shift;
+#  my $args = shift;
+#  die 'You need to supply an order number (ordernumber)'
+#    unless $args->{ordernumber};
+#
+#  my $params = {command => 'AMENDORDER',  sessionkey => $self->session_key} ;
+#  $args = { %$args, %$params };
+#  return $self->get($params);
+#}
+#
+#sub cancel_amend_order {
+#  return shift->get({command => 'CANCELAMENDORDER'});
+#}
+#
+#sub ready_for_checkout {
+#  return shift->get({command =>'READYFORCHECKOUT'});
+#}
+#
+#sub save_amend_order {
+#  return shift->get({command =>'SAVEAMENDORDER'});
+#}
 
 1;
 
