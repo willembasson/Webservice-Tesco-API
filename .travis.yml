@@ -14,7 +14,8 @@ env:
     - secure: "IzgrtNs0I9fjGuVkncs9QQ/SRsKxnZiaSfLpGqdkDsST/8kzNy1VtYGZMcESGYNJIjWN4+0+Y4bdneFFTfN/e02aJeVh+fHj/ODRb64vhclqxUiCymToKhDgL2iXu0h01hAvdORD+Ig9Z2LfJB5U6Ire2d6agb0oCeYXhCPnpnk="
     - secure: "L/C0yTzmp8r+ViBNWoq+lGwje54RxYUcYmFZFi3LzkvUMChBRe1JPTBU5zU6ZmzhPbO+oTZ5YhgulQZl6yQJO21AoEqpi4j5jceP4Lui2dZBA8Wnu0UF+tNjB2U2uaAdIHq0wTFuRpyr1nasmXSOc9q/MzVFALCxp5o5V7rmcrY="
 
-
+before_install:
+     cpanm -n Devel::Cover::Report::Coveralls
 
 install:
      - export RELEASE_TESTING=1 AUTOMATED_TESTING=1 AUTHOR_TESTING=1 HARNESS_OPTIONS=c HARNESS_TIMER=1
@@ -22,10 +23,6 @@ install:
      - cpanm --quiet --notest --installdeps .
 
 script:
-     - PERL5OPT=-MDevel::Cover=-coverage,statement,branch,condition,path,subroutine prove -lrsv t
-     - cover
-
-after_success:
-    - cover -report coveralls
+     - PERL5OPT=-MDevel::Cover=-coverage,statement,branch,condition,path,subroutine prove -lrsv t && cover i-test -report coveralls
 
 
