@@ -47,7 +47,7 @@ my $result = $tesco->login
    });
 
 my $products;
-if (0) {
+
 $products = $tesco->search_product
   ({
     searchtext => 'Turnip',
@@ -127,7 +127,6 @@ for my $f (qw/StatusInfo StatusCode PendingOrders/) {
   ok(exists $orders->{$f},$f);
 }
 
-}
 
 my $offers = $tesco->list_product_offers;
 
@@ -144,15 +143,13 @@ OfferPromotion/) {
 }
 
 
-if (0) {
 my $categories =  $tesco->list_product_categories;
 ok($categories,"categories");
-}
+
 
 $products = $tesco->list_products_by_category({category => 18, extendedinfo => 'y'}) ;
 
 
-if (0) {
 for my $f (qw/PageProductCount StatusCode StatusInfo/) {
   ok(exists $products->{$f}, $f);
 }
@@ -172,7 +169,6 @@ for my $f (qw/ServerUTCDateTime ServerLocalDateTime/) {
   ok($datetime->{$f}, $f);
 }
 
-}
 
 #warn Dumper($products->{Products}->[0]);
 for my $i (0..4) {
