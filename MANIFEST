@@ -1,11 +1,16 @@
-CHANGES
-LICENSE
-MANIFEST
-META.yml
-Makefile.PL
-README
+.coveralls.yml
+.travis.yml
+Changelog
 dist.ini
 lib/WebService/Tesco/API.pm
+LICENSE
+Makefile
+Makefile.PL
+MANIFEST			This list of files
+MANIFEST.SKIP
+MYMETA.json
+MYMETA.yml
+README.md
 t/00-compile.t
 t/01_basic_test.t
 t/author-critic.t

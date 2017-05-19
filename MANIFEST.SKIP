@@ -1,0 +1,6 @@
+.git
+\.bak
+pm_to_blib
+blib
+cover_db
+
