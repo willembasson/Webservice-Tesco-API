@@ -30,6 +30,8 @@ my %WriteMakefileArgs =
     'Test::MinimumVersion' => '0',
     'Test::NoTabs' => '0',
     'Pod::Coverage::TrustPod' => '0',
+    'ExtUtils::PkgConfig' => 0,
+    'LWP::Curl' => 0,
    },
    'CONFIGURE_REQUIRES' => {
                             'ExtUtils::MakeMaker' => '6.31'
@@ -40,7 +42,7 @@ my %WriteMakefileArgs =
    'NAME' => 'WebService::Tesco::API',
    'PREREQ_PM' =>
    {
-    'Any::Moose' => '0',
+    'Moose' => '0',
     'Any::URI::Escape' => '0',
     'Data::Dumper' => '0',
     'JSON' => '0',

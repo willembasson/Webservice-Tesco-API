@@ -5,7 +5,8 @@ package WebService::Tesco::API;
 
 # ABSTRACT: Web service for the Tesco groceries API
 
-use Any::Moose;
+#use Any::Moose;
+use Moose;
 use Any::URI::Escape;
 
 use LWP::Curl;
